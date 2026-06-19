@@ -54,12 +54,12 @@ jobs:
             echo "Conexion SSH exitosa"
             touch ejemplo.txt
       
-      - name: Probar en Github container (SSH deploy)
-        uses: appleboy/ssp-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          password: ${{ secrets.VPS_PASSWORD }}
-          port: ${{ secrets.VPS_SSH_PORT }}
+      - name: probar conexiones scp
+        uses: appleboy/scp-action@v1
+        with: 
+          host: ${{secrets.VPS_HOST}}
+          username: ${{secrets.VPS_USER}}
+          password: ${{secrets.VPS_PASSWORD}}
+          port: ${{secrets.VPS_SSH_PORT}}
           source: "stack.yml,Makefile"
           target: "/home/${{secrets.VPS_USER}}/landingb"
