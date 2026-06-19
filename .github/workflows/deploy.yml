@@ -30,7 +30,7 @@ jobs:
 
       - name: Login en GitHub Container Registry
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "${{ secrets.TOKENXD }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Publicar la imagen creada
         run: |
