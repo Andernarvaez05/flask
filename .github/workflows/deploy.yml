@@ -52,7 +52,4 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
             echo "Conexion SSH exitosa"
-            docker pull ghcr.io/andernarvaez05/holaflask:1.0.0
-            docker stop flask || true
-            docker rm flask || true
-            docker run -d --name flask -p 80:5000 ghcr.io/andernarvaez05/holaflask:1.0.0
+            touch ejemplo.txt
