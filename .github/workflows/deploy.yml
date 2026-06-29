@@ -26,7 +26,7 @@ jobs:
 
       - name: Construir imagen de docker
         run: |
-          docker build -t ghcr.io/andernarvaez05/flask-app:1.0.1 .
+          docker build -t ghcr.io/andernarvaez05/flask-app:${{ github.sha }} .
 
       - name: Login en GitHub Container Registry
         run: |
@@ -34,7 +34,7 @@ jobs:
 
       - name: Publicar la imagen creada
         run: |
-          docker push ghcr.io/andernarvaez05/flask-app:1.0.1
+          docker push ghcr.io/andernarvaez05/flask-app:${{ github.sha }}
 
       - name: Mostrar variables o secrets
         run: |
@@ -53,16 +53,16 @@ jobs:
           script: |
             echo "Conexion SSH exitosa"
             touch ejemplo.txt
-      
+
       - name: probar conexiones scp
         uses: appleboy/scp-action@v1
-        with: 
-          host: ${{secrets.VPS_HOST}}
-          username: ${{secrets.VPS_USER}}
-          password: ${{secrets.VPS_PASSWORD}}
-          port: ${{secrets.VPS_SSH_PORT}}
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_SSH_PORT }}
           source: "stack.yml,Makefile"
-          target: "/home/${{secrets.VPS_USER}}/landingb"
+          target: "/home/${{ secrets.VPS_USER }}/landingb"
 
       - name: Desplegando servicios
         uses: appleboy/ssh-action@v1
@@ -71,9 +71,9 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           port: ${{ secrets.VPS_SSH_PORT }}
+          envs: GITHUB_SHA
           script: |
-           echo "Desplegando servicios"
-           cd ~/landingb
-
-           docker pull ghcr.io/andernarvaez05/flask-app:1.0.1
-           docker stack deploy -c stack.yml borrar
+            echo "Desplegando servicios"
+            cd ~/landingb
+            docker pull ghcr.io/andernarvaez05/flask-app:$GITHUB_SHA
+            docker service update --image ghcr.io/andernarvaez05/flask-app:$GITHUB_SHA borrar_anderson
