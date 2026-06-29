@@ -143,7 +143,7 @@ HTML = """
     <div id="date" class="date"></div>
 
     <div class="subtitle">
-        Landing Page desarrollada con Flask
+        Landing Page desarrollada con Flaaaaask
     </div>
 </div>
 
