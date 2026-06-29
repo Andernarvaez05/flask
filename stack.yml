@@ -1,27 +1,25 @@
 version: '3.9'
 
-
 services:
   anderson:
-  image: ghcr.io/andernarvaez05/flask-app:1.0.1
-  networks:
-       - traefik-public
-deploy: 
-   replicas: 1
-   update_config:
-   parallelism: 1
-   delay: 10s
-   restart_policy:
-   condition: on-failure
-
-labels:
+    image: ghcr.io/andernarvaez05/flask-app:1.0.1
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+      labels:
         - "traefik.enable=true"
         - "traefik.http.routers.anderson.entrypoints=http"
-        - "traefik.http.routers.anderson.rule=Host(anderson.byronrm.com)"
+        - "traefik.http.routers.anderson.rule=Host(`anderson.byronrm.com`)"
         - "traefik.http.middlewares.anderson-https-redirect.redirectscheme.scheme=https"
         - "traefik.http.routers.anderson.middlewares=anderson-https-redirect"
         - "traefik.http.routers.anderson-secure.entrypoints=https"
-        - "traefik.http.routers.anderson-secure.rule=Host(anderson.byronrm.com)"
+        - "traefik.http.routers.anderson-secure.rule=Host(`anderson.byronrm.com`)"
         - "traefik.http.routers.anderson-secure.tls=true"
         - "traefik.http.routers.anderson-secure.tls.certresolver=http"
         - "traefik.http.routers.anderson-secure.service=anderson"
@@ -29,5 +27,5 @@ labels:
         - "traefik.docker.network=traefik-public"
 
 networks:
-        traefik-public:
-          external: true
+  traefik-public:
+    external: true
